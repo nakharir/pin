@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Kenal Dek Pinaa Lebih Dalam 💘</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #ffdce5, #ffb6c1);
+        padding: 20px;
+      }
+      .game-container {
+        background-color: #fff;
+        padding: 25px 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        max-width: 420px;
+        width: 100%;
+        animation: fadeInUp 1s ease;
+      }
+      h1 {
+        color: #d81b60;
+        font-weight: 700;
+        font-size: 1.6em;
+        margin-bottom: 10px;
+      }
+      h2 {
+        color: #555;
+        font-size: 1.1em;
+        margin-bottom: 20px;
+        transition: opacity 0.5s ease;
+      }
+      #answer-input {
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+        border-radius: 10px;
+        border: 2px solid #f06292;
+        text-align: center;
+        margin-bottom: 15px;
+        outline: none;
+        transition: 0.3s;
+      }
+      #answer-input:focus {
+        border-color: #d81b60;
+        box-shadow: 0 0 10px rgba(216, 27, 96, 0.3);
+      }
+      button {
+        background-color: #d81b60;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1em;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+        width: 80%;
+        max-width: 300px;
+      }
+      button:hover {
+        background-color: #c2185b;
+        transform: translateY(-2px);
+      }
+      #feedback {
+        margin-top: 15px;
+        font-size: 1.1em;
+        font-weight: 600;
+        min-height: 40px;
+      }
+      .correct {
+        color: #4caf50;
+        animation: pop 0.5s ease;
+      }
+      .incorrect {
+        color: #f44336;
+      }
+      #final-message {
+        display: none;
+        animation: fadeInUp 1s ease;
+      }
+      .heart {
+        font-size: 3em;
+        color: #d81b60;
+        animation: beat 1.5s infinite;
+      }
+      @keyframes beat {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .falling-heart {
+        position: fixed;
+        top: -20px;
+        color: #ff6f91;
+        animation: fall 4s linear forwards;
+        opacity: 0.9;
+        z-index: 10;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(110vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+        .game-container {
+          padding: 20px 15px;
+        }
+        h1 {
+          font-size: 1.3em;
+        }
+        h2 {
+          font-size: 1em;
+        }
+        button {
+          font-size: 0.9em;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="bg-music" autoplay loop>
+      <source
+        src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0c8655d9b0.mp3?filename=sweet-melody-21773.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <div class="game-container">
+      <h1 id="game-title">Pertanyaan nih buat Dek Pinaa 💕</h1>
+      <div id="game-area">
+        <h2 id="question-text">Memuat pertanyaan...</h2>
+        <input
+          type="text"
+          id="answer-input"
+          placeholder="Tulis jawabanmu di sini..."
+        />
+        <br />
+        <button id="submit-btn">Kirim Jawaban 💌</button>
+        <p id="feedback"></p>
+      </div>
+
+      <div id="final-message">
+        <h1 id="final-title"></h1>
+        <div class="heart">💖</div>
+        <h2 id="final-text"></h2>
+      </div>
+    </div>
+
+    <script>
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbz-mah3K5bMY3gwhyYVqiiR6fs3GzsZA6QEudovw661GsWD4bKwoi4BJu1i0I7A6pHSTQ/exec";
+      const namaPasangan = "Dek Pinaa 💕";
+
+      const questions = [
+        {
+          question:
+            "Kalau kamu lagi sedih, hal kecil apa yang bisa bikin kamu tenang lagi? 🌧️",
+          response: [
+            "Wah... lucu banget, aku bakal inget itu buat nyenengin kamu nanti 🥰",
+            "Berarti itu rahasia kecil buat nyembuhin sedih kamu ya~ 😚",
+          ],
+        },
+        {
+          question:
+            "Makanan favorit kamu apa sih yang gak pernah bikin bosen? 🍰",
+          response: [
+            "Hehe noted~ biar nanti aku bisa traktir yang itu 😋",
+            "Wah, fix itu harus jadi menu wajib kalo lagi bareng aku 😝",
+          ],
+        },
+        {
+          question: "Kamu lebih suka suasana hujan atau cerah? ☔☀️",
+          response: [
+            "Kalau aku sih, yang penting suasananya bareng kamu 😌",
+            "Wah cocok banget, nanti kita bisa nikmatin bareng 😍",
+          ],
+        },
+        {
+          question:
+            "Tipe cowok kayak gimana sih yang bisa bikin kamu nyaman? 💭",
+          response: [
+            "Hmm... aku dengerin baik-baik nih, siapa tau bisa jadi kayak gitu 😏",
+            "Wah, kayaknya kamu suka yang perhatian deh~ bener gak? 😚",
+          ],
+        },
+        {
+          question:
+            "Kamu lebih suka diajak ngobrol panjang atau diem bareng tapi nyaman? 💬🤫",
+          response: [
+            "Aku sih dua-duanya, asal bareng kamu 😳",
+            "Keduanya enak sih, apalagi kalo ada kamu di sebelahku 😋",
+          ],
+        },
+        {
+          question:
+            "Kalau lagi banyak pikiran, kamu biasanya nyari ketenangan di mana? 🌙",
+          response: [
+            "Semoga nanti tempat tenangmu bisa di pundakku ya 😌",
+            "Wah, aku suka tempat kayak gitu juga~ tenang dan hangat 💕",
+          ],
+        },
+        {
+          question:
+            "Satu hal kecil apa yang bisa bikin kamu bahagia banget hari ini? ✨",
+          response: [
+            "Awww~ kamu emang gampang banget bikin suasana manis 😍",
+            "Lucu banget jawabannya, kamu tuh bener-bener sunshine ☀️",
+          ],
+        },
+      ];
+
+      let current = 0;
+      const questionText = document.getElementById("question-text");
+      const answerInput = document.getElementById("answer-input");
+      const submitBtn = document.getElementById("submit-btn");
+      const feedback = document.getElementById("feedback");
+      const gameArea = document.getElementById("game-area");
+      const finalMessage = document.getElementById("final-message");
+      const finalTitle = document.getElementById("final-title");
+      const finalText = document.getElementById("final-text");
+
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("falling-heart");
+        heart.textContent = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }
+      setInterval(createHeart, 1200);
+
+      function loadQuestion() {
+        if (current < questions.length) {
+          questionText.style.opacity = 0;
+          setTimeout(() => {
+            questionText.textContent = questions[current].question;
+            feedback.textContent = "";
+            answerInput.value = "";
+            questionText.style.opacity = 1;
+            answerInput.focus();
+          }, 400);
+        } else {
+          showFinalMessage();
+        }
+      }
+
+      function sendToSheet(q, a) {
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nama: namaPasangan,
+            pertanyaan: q,
+            jawaban: a,
+          }),
+        });
+      }
+
+      function checkAnswer() {
+        const userAns = answerInput.value.trim();
+        if (userAns === "") {
+          feedback.textContent =
+            "Isi dulu dong~ aku pengen tau jawaban kamu 😗";
+          feedback.className = "incorrect";
+          return;
+        }
+
+        const q = questions[current];
+        const randomRes =
+          q.response[Math.floor(Math.random() * q.response.length)];
+        feedback.textContent = randomRes;
+        feedback.className = "correct";
+        sendToSheet(q.question, userAns);
+        current++;
+        setTimeout(loadQuestion, 2500);
+      }
+
+      function showFinalMessage() {
+        gameArea.style.display = "none";
+        finalMessage.style.display = "block";
+        finalTitle.textContent = `Makasih udah jujur, ${namaPasangan} 💞`;
+        finalText.innerHTML = `
+      Sekarang aku jadi tau hal-hal kecil yang kamu suka~ biar bisa aku lakuin biar kamu makin bahagia 😳💗<br><br>
+      <button id="restart-btn" style="margin-top:15px;background:#d81b60;color:white;border:none;padding:10px 20px;border-radius:20px;cursor:pointer;">
+        Main Lagi 🔁
+      </button>
+    `;
+
+        document.getElementById("restart-btn").addEventListener("click", () => {
+          current = 0;
+          finalMessage.style.display = "none";
+          gameArea.style.display = "block";
+          loadQuestion();
+        });
+      }
+
+      submitBtn.addEventListener("click", checkAnswer);
+      answerInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") checkAnswer();
+      });
+      window.onload = loadQuestion;
+    </script>
+  </body>
+</html>
