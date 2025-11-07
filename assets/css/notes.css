@@ -1,0 +1,112 @@
+/* assets/css/notes.css */
+
+/* Styling untuk halaman daftar (notes.html) */
+.notes-list {
+  margin-top: 30px;
+}
+
+.note-link {
+  display: block;
+  background-color: #fff9f0; /* Warna kertas memo */
+  border-left: 5px solid #e6a8a8;
+  padding: 20px;
+  margin-bottom: 15px;
+  text-decoration: none;
+  color: #333;
+  transition: box-shadow 0.3s ease;
+  border-radius: 5px;
+}
+
+.note-link:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.note-link h3 {
+  font-family: "AmaticSC", cursive;
+  font-size: 2.2rem;
+  color: #bf360c;
+  margin-bottom: 5px;
+}
+
+.note-link p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.note-link span {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: "AmaticSC", cursive;
+  font-size: 1.5rem;
+  color: #bf360c;
+  font-weight: bold;
+}
+
+/* Styling untuk halaman catatan individu (note-1.html) */
+.note-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  margin-top: 20px;
+  min-height: 400px;
+  line-height: 1.8; /* Spasi antar baris lebih lebar agar mudah dibaca */
+  font-size: 1.6rem;
+}
+
+.note-content h2 {
+  font-family: "AmaticSC", cursive;
+  font-size: 3rem;
+  color: #bf360c;
+  border-bottom: 2px dashed #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-family: "AmaticSC", cursive;
+  font-size: 1.8rem;
+  color: #795548;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+.note-images {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); /* Kolom responsif */
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px dashed #eee;
+}
+
+.note-img {
+  width: 100%;
+  height: 150px; /* Tinggi tetap */
+  object-fit: cover; /* Pastikan gambar mengisi kotak tanpa terdistorsi */
+  border: 3px solid #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /* Menandakan bisa diklik */
+  transition: transform 0.2s ease-in-out;
+}
+
+.note-img:hover {
+  transform: scale(1.03);
+}
+
+/* Responsive adjustment for note images */
+@media (max-width: 480px) {
+  .note-images {
+    grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+  }
+  .note-img {
+    height: 200px; /* Sedikit lebih tinggi di HP */
+  }
+}

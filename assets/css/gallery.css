@@ -1,0 +1,55 @@
+/* assets/css/gallery.css */
+
+.gallery-container {
+  display: grid;
+  /* Membuat kolom responsif: minimal 250px, maks 1fr */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px; /* Jarak antar foto */
+  margin-top: 30px;
+  padding: 10px;
+}
+
+.photo-item {
+  background-color: #fff; /* Latar putih polaroid */
+  border: 1px solid #ddd;
+  padding: 15px 15px 30px 15px; /* Padding bawah lebih besar untuk teks */
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.photo-item:hover {
+  transform: scale(1.05) rotate(1deg) !important; /* Efek hover */
+  z-index: 10;
+}
+
+.photo-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #eee;
+}
+
+.photo-item figcaption {
+  font-family: "Caveat", cursive; /* Font tulisan tangan */
+  font-size: 1.4rem;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Style untuk washi-tape (pita dekorasi) */
+.tape {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%) rotate(2deg);
+  width: 100px;
+  height: auto;
+  opacity: 0.8;
+  border: none !important; /* Hapus border khusus untuk gambar tape */
+}
+
+/* * KODE LIGHTBOX SUDAH DIPINDAHKAN KE style.css
+ * agar bisa digunakan di semua halaman.
+ */
